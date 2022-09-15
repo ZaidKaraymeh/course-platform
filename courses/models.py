@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 from django.core.validators import MaxValueValidator, MinValueValidator
 from decimal import Decimal
-from backend.courses.utils.helpers import new_average
 
 
 class Course(models.Model):
@@ -27,7 +26,7 @@ class Course(models.Model):
         ((n)*old_average + new_rating )/(n+1)
         increment n
     """
-    rating_average = models.DecimalField(max_digits=2, decimal_places=1,
+    rating_average = models.DecimalField(max_digits=2, decimal_places=1, default=0,
         validators=[
                 MaxValueValidator(5),
                 MinValueValidator(0)
