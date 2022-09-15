@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="container" >
+    <div class="my-5">
+        <h2>Discover courses</h2>
+         
+            <div class="row">
+                <div class="MultiCarousel" data-items="1, 2, 3, 4" data-slide="3" id="MultiCarousel"  data-interval="1000">
+                    <div class="MultiCarousel-inner">
+                        {% for course in courses %}
+                        <div class="item">
+                            <a href="#"  class="text-decoration-none" >
+                                <div class="card border-0 mx-2">
+                                    <img src="{{course.image.url}}" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{course.title}}</h5>
+                                        <h6>{{course.user}}</h6>
+                                        <p class="fw-bold p-0 m-0" >
+                                            BHD {{course.final_price}} 
+                                            {% if course.coupon %}
+                                                <small class="text-decoration-line-through" >{{course.price}}</small>
+                                            {% endif %}
+                                        </p>
+                                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+            <button class="btn btn-primary leftLst"><</button>
+            <button class="btn btn-primary rightLst">></button>
+	</div>
+        
+
+</section>
+{% endblock content %}
