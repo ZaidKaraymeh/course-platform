@@ -4,9 +4,10 @@ from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 from django.core.validators import MaxValueValidator, MinValueValidator
 from decimal import Decimal
-
+import uuid
 
 class Course(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -72,6 +73,9 @@ class UserRating(models.Model):
                 MaxValueValidator(5),
                 MinValueValidator(0)
                 ])
+    comment = models.TextField(max_length=500)
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
 
 
 

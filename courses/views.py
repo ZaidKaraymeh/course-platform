@@ -9,3 +9,14 @@ def home(request):
         'courses':courses
     }
     return render(request, 'home.html', context)
+
+
+def course(request, course_id):
+    course = Course.objects.get(id=course_id)
+    context = {
+        'course':course
+    }
+    return render(request, 'course.html', context)
+
+
+

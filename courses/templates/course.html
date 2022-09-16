@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container" >
+    <div class="row my-5">
+        <div class="col-8">
+            <h2>{{course.title}}</h2>
+            <h4>{{course.description}}</h4>
+            <h5>By {{course.user}}</h5>
+            <h5 class="text-warning" >{{course.rating_average}}/5 
+                <small class="text-dark" >
+                    ({{course.rating_count}} ratings)
+                </small>
+            </h5>
+            <p>Last updated at {{course.updated_at|date:"m/Y"}}</p>
+        </div>
+        <div class="col-4">
+            <img class="w-100" src="{{course.image.url}}" alt="">
+        </div>
+    </div>
+    <div class="row my-5">
+        <div class="col-8">
+        </div>
+        <div class="col-4 ">
+            <h4 class="fw-bol p-0 m-0 mb-4" >
+                <strong>
+                    BHD {{course.final_price}} 
+                </strong>
+                {% if course.coupon %}
+                    <small class="text-decoration-line-through text-muted" >{{course.price}}</small> <small class="">{{course.coupon}}% off</small>
+                {% endif %}
+            </h4>
+            <a class="btn btn-primary d-block mb-1" >
+                Add to Cart
+            </a>
+            <a class="btn btn-primary d-block mb-1" >
+                Add to Wishlist
+            </a>
+        </div>
+    </div>
+
+</section>
+
+{% endblock content %}
