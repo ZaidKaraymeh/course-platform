@@ -30,12 +30,13 @@
                     <small class="text-decoration-line-through text-muted" >{{course.price}}</small> <small class="">{{course.coupon}}% off</small>
                 {% endif %}
             </h4>
-            <a class="btn btn-primary d-block mb-1" >
-                Add to Cart
-            </a>
-            <a class="btn btn-primary d-block mb-1" >
-                Add to Wishlist
-            </a>
+            <form  class="d-block" method="post" action="{% url 'add_to_cart' course.id %}">
+                {% csrf_token %}
+                <input type="submit" value="Add to Cart" class="btn btn-primary w-100 mb-1" >
+                </input>
+                <input type="submit" value="Add to Wishlist" class="btn btn-primary w-100 mb-1" >
+                </input>
+            </form>
         </div>
     </div>
 

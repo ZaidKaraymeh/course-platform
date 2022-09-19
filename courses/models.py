@@ -67,20 +67,52 @@ class Course(models.Model):
 
 
 class UserRating(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.IntegerField(
         validators=[
                 MaxValueValidator(5),
                 MinValueValidator(0)
                 ])
-    comment = models.TextField(max_length=500)
+    comment = models.TextField(max_length=500, null=True)
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
+
+class PurchasedCourse(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    course = models.ForeignKey('courses.Course', on_delete=models.CASCADE)
+    price = models.DecimalField(max_digits=6, decimal_places=3)
+
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
+
+class Reciept(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    courses = models.ManyToManyField('courses.Course')
+    price = models.DecimalField(max_digits=6, decimal_places=3)
+
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
 
 
+class Cart(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    courses = models.ManyToManyField("courses.Course", blank=True)
+    price = models.DecimalField(max_digits=6, decimal_places=3, default=0)
+
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
+
+    def __str__(self):
+        return f"{self.user}'s Cart"
+    
 
 
 class Lecture(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     title = models.CharField(max_length=255)
     body = models.TextField()
     video = models.FileField(upload_to='uploads/%Y/%m/%d/', max_length=100)

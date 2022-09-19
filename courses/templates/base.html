@@ -1,5 +1,5 @@
 {% load static %}
-
+{% load tags %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -51,11 +51,17 @@
             </ul>
             <ul class="navbar-nav ms-auto">
               {% if user.is_authenticated %}
-                <li class="nav-item dropdown dropdown-menu-end px-5">
+                {% block cart %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cart' %}">Cart {{user|cart_count}} </a>
+                  </li>
+                {% endblock cart %}
+                <li class="nav-item dropdown dropdown-menu-end pe-5">
                   <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">  Account</a>
                   <div class="dropdown-menu  ">
                     <a class="dropdown-item" href="#"> <i class="fa-regular fa-user"></i> Profile</a>
                     <a class="dropdown-item" href="#"> <i class="fa-solid fa-book"></i>  My Courses</a>
+                    <a class="dropdown-item" href="{% url 'orders' %}"> <i class="fa fa-receipt"></i>  Orders</a>
                     <a class="dropdown-item" href="#"> <i class="fa-regular fa-bookmark"></i> Bookmarks </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#"> <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
@@ -65,28 +71,29 @@
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'login' %}">Login</a>
                 </li>
-              {% endif %}
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
-    <main class="">
-        <div class="">
-            <div class="  ">
-                {% if messages %} {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show ">{{message}}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {% endfor %} {% endif %}
-                <div class="p-0 m-0 "> 
-                    {% block content %}{% endblock content %}
-                </div>
+                {% endif %}
+              </ul>
             </div>
+          </div>
+        </nav>
+      </header>
+      <main class="">
+        <div class="">
+          <div class="  ">
+            {% if messages %} {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show text-center">{{message}}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %} {% endif %}
+            <div class="p-0 m-0 "> 
+              {% block content %}{% endblock content %}
+            </div>
+          </div>
         </div>
     </main>
 
     <script defer src="{% static 'multiitem.js' %}" ></script>
+    <script defer src="{% static 'scripts.js' %}" ></script>
     
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load tags %}
+{% block content %}
+
+<section class="container">
+    <div class="row my-5">
+        <div class="col-8">
+            <h1 class="mb-4" >Cart</h1>
+            {% for item in cart.courses.all%}
+            <div class="card border-light mb-3" >
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="{{item.image.url}}" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h4 class="card-title">{{item.title}}</h4>
+                                <h6>{{item.user}}</h6>
+                                <h6 class="text-warning" >{{item.rating_average}}/5 ({{item.rating_count}})</h6>
+                                <h4 class="fw-bol p-0 m-0" >
+                                    <strong>
+                                        BHD {{item.final_price}} 
+                                    </strong>
+                                    {% if item.coupon %}
+                                        <small class="text-decoration-line-through text-muted" >{{item.price}}</small> <small class="">{{item.coupon}}% off</small>
+                                    {% endif %}
+                                </h4>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-4">
+            <h1 class="mb-4 opacity-0" >Cart</h1>
+            <div class="card p-4">
+                <h4>Your Order</h4>
+                <p>
+                    Total: BHD {{cart.price}}
+                </p>
+                <form method="post" >
+
+                    {% csrf_token %}
+
+                    {% if cart.courses.count == 0 %}
+                        <a type="submit" class="btn btn-primary w-100 submit disabled" >
+                            Proceed to Checkout
+                        </a>
+                    {% else %}
+                        <a href="{% url 'checkout' %}" type="submit" class="btn btn-primary w-100 submit" >
+                            Proceed to Checkout
+                        </a>
+                    {% endif %}
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
