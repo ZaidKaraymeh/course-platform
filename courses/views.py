@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import *
 from django.contrib import messages
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 
 # Create your views here.
 
@@ -13,14 +13,63 @@ def home(request):
     }
     return render(request, 'home.html', context)
 
-
+"""
+    View a Course
+"""
 def course(request, course_id):
     course = Course.objects.get(id=course_id)
     context = {
         'course':course
     }
     return render(request, 'course.html', context)
+"""
+    View Purchased Courses
+"""
+def courses(request, course_id=''):
+    user = request.user
+    context = {
+    }
+    
+    try:
+        if course_id != '' and Course.objects.filter(id=course_id).exists() :
+            course = PurchasedCourse.objects.get(user = user, course=course_id)
+            context['course'] = course
+            return render(request, 'learn.html', context)
+    except Exception:
+        return redirect('courses')
 
+    courses = PurchasedCourse.objects.filter(user=user)
+    context['courses'] = courses
+    return render(request, 'courses.html', context)
+
+def lectures(request, course_id=''):
+    user = request.user
+    context = {
+    }
+    if Course.objects.filter(id=course_id).exists() and PurchasedCourse.objects.filter(user=user, course=course_id).exists():
+        course = Course.objects.get(id=course_id)
+        
+        context['course'] = course
+
+        return render(request, 'lectures.html', context)
+
+    return redirect('courses')
+
+def learn(request, course_id='', lecture_id=''):
+    user = request.user
+    context = {
+    }
+
+    if not PurchasedCourse.objects.filter(user=user, course=course_id).exists():
+        return render('courses')
+
+    course = Course.objects.get(id=course_id)
+    lecture = Lecture.objects.get(id=lecture_id)
+
+    context['course'] = course
+    context['lecture'] = lecture
+
+    return render(request, 'learn.html', context)
 
 def cart(request, course_id=''):
     user = request.user
@@ -53,7 +102,7 @@ def cart(request, course_id=''):
     Recieves request from 'cart', adds a PurchasedCourse record to all items in cart
     makes Reciept object identical to cart
     clears cart price and courses
-    
+
 """
 
 def checkout(request):
@@ -64,7 +113,7 @@ def checkout(request):
 
     for course in cart.courses.all():
         purchased_course = PurchasedCourse.objects.create(
-            user=user,
+            user= user,
             course = course,
             price = course.final_price
         )

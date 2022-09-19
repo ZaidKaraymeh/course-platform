@@ -63,7 +63,16 @@ class Course(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+class Lecture(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    title = models.CharField(max_length=255)
+    body = models.TextField()
+    video = models.FileField(upload_to='uploads/%Y/%m/%d/', default='default_lecture.mp4')
+
+
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
 
 
 class UserRating(models.Model):
@@ -111,13 +120,5 @@ class Cart(models.Model):
     
 
 
-class Lecture(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
-    title = models.CharField(max_length=255)
-    body = models.TextField()
-    video = models.FileField(upload_to='uploads/%Y/%m/%d/', max_length=100)
 
-
-    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
 

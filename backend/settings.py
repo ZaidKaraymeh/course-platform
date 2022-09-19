@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     'courses',
 ]
 
+
 MIDDLEWARE = [
+    'courses.middlewares.RangesMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

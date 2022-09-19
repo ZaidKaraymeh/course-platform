@@ -1,3 +1,6 @@
+.lecture:hover{
+  background-color: rgba(0, 0, 0, 0.2);
+}
 .vh-100 {
   min-height: 100vh;
 }
@@ -37,4 +40,10 @@
 .MultiCarousel .rightLst.over {
   pointer-events: none;
   background: #ccc;
+}
+
+video {
+  width: 100%    !important;
+  height: auto   !important;
+  z-index: 2;
 }

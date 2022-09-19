@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container-fluid" >
+    <div class="row ">
+        <div class="col-sm-9 mx-0 px-0">
+            <video controls preload> 
+                <source src="{{lecture.video.url}}" type="video/mp4" >
+            </video>
+        </div>
+        <div class="col-sm-3 mx-0 px-0 overflow-auto" style=" max-height:80vh" >
+            {% for lecture in course.lectures.all|dictsort:"created_at" %}
+                <div class="col-12 ">
+                    <a class="text-decoration-none" href="{% url 'learn' course.id lecture.id %}" >
+
+                        <div class="card lecture">
+                            <div class="card-body">
+                                <p class="card-title"> {{lecture.title}} </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
